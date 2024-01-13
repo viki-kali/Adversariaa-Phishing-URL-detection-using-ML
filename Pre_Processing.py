@@ -52,7 +52,7 @@ dataset11 = dataset11[dataset11['label'] == '1.0']
 
 dataset12 = pd.read_csv(path12, encoding="utf-8")
 
-
+#Extract 'url' feature from all the datasets
 dataset1 =pd.DataFrame(dataset1['url'])
 dataset2 =pd.DataFrame(dataset2['url'])
 dataset3 =pd.DataFrame(dataset3['url'])
@@ -67,6 +67,9 @@ dataset11=pd.DataFrame(dataset11['url'])
 dataset12=pd.DataFrame(dataset12['url'])
 
 min_rows=500
+
+#label-0 => Good Urls
+#label-1 => Malicious Urls
 
 dataset1_sampled = dataset1.sample(n=min_rows, random_state=42)
 dataset1_sampled['label']=0
@@ -110,6 +113,7 @@ dataset12_sampled['label']=1
 result_dataset6 = pd.concat([dataset6_sampled, dataset12_sampled], axis=0)
 result_dataset6.reset_index(drop=True, inplace=True)
 
+#This will generate six datasets, containing both good and malicious url in equal ratio
 result_dataset1.to_csv("(url,label)copy_0f_combined_dataset1.csv", index=False)
 result_dataset2.to_csv("(url,label)copy_0f_combined_dataset2.csv", index=False)
 result_dataset3.to_csv("(url,label)copy_0f_combined_dataset3.csv", index=False)
