@@ -1798,12 +1798,7 @@ def GoogleSearchFeature(selfwp):
     count = 0
     num = 0
     ld = 0
-    try:
-        from googlesearch import search
-    except ImportError:
-        print("No module named 'google' found")
 
-    # to search
     query = hostname
     search_results = search(query, num_results=10)
 
@@ -1966,9 +1961,9 @@ if __name__ == "__main__":
         R_06 = JSUsed(val['url'])
         R_07 = FilesInURL(val['url'])
         R_08 = CSSUsed(val['url'])
-        #R_G = GoogleSearchFeature(selfwp)
-        R_50 =0#R_G[0]
-        R_63 =0#R_G[1]
+        R_G = GoogleSearchFeature(selfwp)
+        R_50 =R_G[0]
+        R_63 =R_G[1]
 
         # add record to pandas data frame for saving in future
         df = df.append({'Sr. No.': num,
