@@ -947,7 +947,7 @@ def SensitiveWordCount(url):
             print(f"Netwoek level error occurred: {e}. Retrying...")
             #time.sleep(2)  # Wait for 2 seconds before retrying
             retries += 1
-        except Exception as e
+        except Exception as e:
             return 0
     #print("Max retries reached. Unable to fetch page source.")
     return 0  # or return an appropriate value based on your requirements
