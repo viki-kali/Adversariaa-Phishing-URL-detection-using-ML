@@ -77,12 +77,6 @@ homo_dictionary = {}
 
 
 #Function to calculate the total time taken for the execution of the program
-
-def functionoftime():
-    start_time = time.time()
-    print("--- Execution Time is %s seconds ---" % (time.time() - start_time))
-
-
 def is_registered(domain):
     try:
         domain_info = whois.whois(domain)
@@ -924,7 +918,7 @@ def SensitiveWordCount(url):
         try:
             req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
             page_source = urlopen(req).read()
-            print("Page source is download.")
+            print("Page source is downloaded.")
             soup = BeautifulSoup(page_source, 'html.parser')
 
             count = 0
@@ -1834,8 +1828,6 @@ def ensure_http_www_prefix(url):
 #Main Function() starts
 
 if __name__ == "__main__":
-    #For calculation of execution time
-    functionoftime()
     #Read input file from current path
     data = pd.read_csv("raw.csv", encoding= 'unicode_escape')
 
@@ -1866,6 +1858,7 @@ if __name__ == "__main__":
 
     num = 0
     for index,val in data.iterrows():
+        start_time = time.time()
         num = num + 1
         selfwp=ensure_http_www_prefix(val['url'])
         parsed_url = urllib.parse.urlparse(selfwp)
@@ -2065,7 +2058,9 @@ if __name__ == "__main__":
         res=pd.concat([df,dic_df],axis=0)
         res.reset_index(drop=True,inplace=True)
         df=res
-        print(num,"URLs Completed, url: ",selfwp)
+        end_time = time.time()
+        execution_time = round(end_time - start_time)
+        print(num,"URLs Completed in",execution_time,"sec, url:",selfwp)
 
         # save result to output file
         df.to_csv("w1.csv", index=False)
