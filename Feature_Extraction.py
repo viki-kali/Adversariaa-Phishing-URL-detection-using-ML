@@ -1447,32 +1447,52 @@ def IPAddress(url):
         asn_num = result.get('asn')
         asn_country = result.get('asn_country_code')
         asn_cidr = result.get('asn_cidr')
-        asn_postal_code =0
+        asn_postal_code = ASNPostalCode(IP_address)
         created_date = result.get('asn_date')
-        updated_date =0
+        updated_date = ASNUpdationDate(url)
         arr = [IP_address, asn_num, asn_country, asn_cidr,asn_postal_code,created_date,updated_date]
         return arr
 
     except Exception as e:
-        arr = [0, 0, 0, 0,0,0,0]
+        arr = [0,0,0,0,0,0,0]
         return arr
 
 
-# def ASNPostalCode(url):
-#     # get the access token from ipinfo.io (optional)
-#     access_token = 'a0b3f5e94b8f77'
-#
-#     # create an instance of the IPinfo class with your access token
-#     ipinfo_obj = ipinfo.getHandler(access_token)
-#     try:
-#         parsed_url = urllib.parse.urlparse(url)
-#         dom = parsed_url.netloc
-#         IP_address = socket.gethostbyname(dom)
-#         ip_details = ipinfo_obj.getDetails(IP_address)
-#         return ip_details.all['postal']
-#
-#     except Exception as e:
-#         return 0
+
+def ASNPostalCode(ip_address):
+    # Replace 'YOUR_API_KEY' with your actual ipinfo API key
+    api_key = 'a0b3f5e94b8f77'
+
+    # Construct the URL for the ipinfo API
+    url = f'https://ipinfo.io/{ip_address}?token={api_key}'
+
+    try:
+        # Make the GET request to the ipinfo API
+        response = requests.get(url)
+        data = response.json()
+
+        # Check if the request was successful
+        if response.status_code == 200:
+            return data.get('postal')
+        else:
+            return 0
+    except Exception as e:
+        return 0
+
+def ASNUpdationDate(domain_name):
+    try:
+        # Perform a WHOIS query using the whois package
+        domain_info = whois.whois(domain_name)
+        update_date = domain_info.updated_date
+        if isinstance(update_date, list):
+            update_date = update_date[0]
+
+        # Extract only the date portion
+        formatted_update_date = update_date.strftime('%Y-%m-%d')
+        return formatted_update_date
+
+    except Exception as e:
+        return 0
 
 #Function to check if any .exe file is contained in the URL Feature03
 
