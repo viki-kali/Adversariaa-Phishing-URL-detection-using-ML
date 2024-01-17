@@ -608,9 +608,12 @@ def DomainURLRatio(str):
 
 
 def TLD(str):
-    res = get_tld(str, as_object=True)
-    a = res.tld
-    return a
+    try:
+        res = get_tld(str, as_object=True)
+        a = res.tld
+        return a
+    except Exception as e:
+        return 0
 
 
 #Function to check if the URL is hashed or not Feature29
@@ -636,24 +639,30 @@ def IsHashed(url):
 #test_case_1 = "http://com.example.com"     (True) otherwise (False)
 
 def TLDInSubdomain(url):
-    extracted_tld = get_tld(url, fix_protocol=True)
-    subdomain_info = tldextract.extract(url)
-    subdomain = subdomain_info.subdomain
-    return extracted_tld in subdomain
+    try:
+        extracted_tld = get_tld(url, fix_protocol=True)
+        subdomain_info = tldextract.extract(url)
+        subdomain = subdomain_info.subdomain
+        return extracted_tld in subdomain
+    except Exception as e:
+        return 0
 
 
 #Function to check if TLD or ccTLD is used in the path of website URL Feature35
 
 def TLDInPath(str):
-    parsed_url = urllib.parse.urlparse(str)
-    h = parsed_url.path
-    #print(h)
-    res = get_tld(str, fix_protocol=True)
-    if res in h:
-        #print("Yes")
-        return True
-    else:
-        #print("No")
+    try:
+        parsed_url = urllib.parse.urlparse(str)
+        h = parsed_url.path
+        #print(h)
+        res = get_tld(str, fix_protocol=True)
+        if res in h:
+            #print("Yes")
+            return True
+        else:
+            #print("No")
+            return False
+    except Exception as e:
         return False
 
 
@@ -1807,27 +1816,32 @@ def FileExtension(selfa):
 
 
 def GoogleSearchFeature(selfwp):
-    parsed_url = urllib.parse.urlparse(selfwp)
-    hostname = parsed_url.netloc
+    try:
+        parsed_url = urllib.parse.urlparse(selfwp)
+        hostname = parsed_url.netloc
 
-    count = 0
-    num = 0
-    ld = 0
+        count = 0
+        num = 0
+        ld = 0
 
-    query = hostname
-    search_results = search(query, num_results=10)
+        query = hostname
+        search_results = search(query, num_results=10)
 
-    for j in search_results:
-        j = j.lower()
-        if hostname in j:
-            count += 1
-        if num == 0:
-            ld = (enchant.utils.levenshtein(j, hostname))
+        for j in search_results:
+            j = j.lower()
+            if hostname in j:
+                count += 1
+            if num == 0:
+                ld = (enchant.utils.levenshtein(j, hostname))
 
-        num += 1
+            num += 1
 
-    arr = [ld, count]
-    return arr
+        arr = [ld, count]
+        return arr
+
+    except Exception as e:
+        arr = [0,0]
+        return arr
 
 
 def domain_name(url):
