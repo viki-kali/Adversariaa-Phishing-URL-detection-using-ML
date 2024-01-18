@@ -645,7 +645,7 @@ def TLDInSubdomain(url):
         subdomain = subdomain_info.subdomain
         return extracted_tld in subdomain
     except Exception as e:
-        return 0
+        return False
 
 
 #Function to check if TLD or ccTLD is used in the path of website URL Feature35
@@ -1599,7 +1599,7 @@ def CheckMailto(url):
         return arr
 
     except Exception as e:
-        arr=[0,0,0,0,0,0]
+        arr=[False,False,0,0,0,0]
         return arr
 
 
@@ -1663,7 +1663,7 @@ def DomainAgeInDays(url):
         return delta.days
 
     except Exception as e:
-        return False  # Or any other value or action you want to take on error
+        return 0  # Or any other value or action you want to take on error
 
 
 #Function to check if HTML source code contains a JavaScript command to start a popup Window Feature80
