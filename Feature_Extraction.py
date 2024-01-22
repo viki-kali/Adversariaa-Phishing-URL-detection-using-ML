@@ -1854,7 +1854,7 @@ def ensure_http_www_prefix(url):
     elif url.startswith("http://"):
         return "http://www." + url[7:]
     elif url.startswith("https://"):
-        return "https://wwww." + url[8:]
+        return "https://www." + url[8:]
     else:
         return "http://www." + url
 
