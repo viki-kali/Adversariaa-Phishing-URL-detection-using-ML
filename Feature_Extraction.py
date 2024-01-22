@@ -2,7 +2,6 @@
 import codecs
 import decimal
 import ipinfo
-from urllib import request
 import ipaddress
 import mechanize
 from mechanize import Browser                             #version 0.4.7
@@ -1852,8 +1851,10 @@ def ensure_http_www_prefix(url):
         return url
     elif url.startswith("www."):
         return "http://www." + url[4:]
-    elif url.startswith("http://") or url.startswith("https://"):
+    elif url.startswith("http://"):
         return "http://www." + url[7:]
+    elif url.startswith("https://"):
+        return "https://wwww." + url[8:]
     else:
         return "http://www." + url
 
@@ -1863,7 +1864,7 @@ def ensure_http_www_prefix(url):
 
 if __name__ == "__main__":
     #Read input file from current path
-    data = pd.read_csv("raw.csv", encoding= 'unicode_escape')
+    data = pd.read_csv("mal50.csv", encoding= 'unicode_escape')
 
 
     # create pandas data frame to save output
