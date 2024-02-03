@@ -2,6 +2,7 @@
 import codecs
 import decimal
 import ipinfo
+from urllib import request
 import ipaddress
 import mechanize
 from mechanize import Browser                             #version 0.4.7
@@ -33,8 +34,6 @@ from requests.exceptions import RequestException
 import csv
 import pandas as pd                                       #version 1.1.5
 from xdg.Locale import regex                              #version 0.25
-#from coding import is_registered                          #version 0.5.1
-#import homo_dictionary
 from urllib.parse import urlparse                         #version 1.22
 from googlesearch import search                           #version 1.0.1
 import numpy                                              #version 1.19.5
@@ -912,9 +911,6 @@ def Trigram(str):
 #Function to count number of sensitive words in a webpage Feature48
 
 def SensitiveWordCount(url):
-    max_retries = 1
-    retries = 0
-
     wanted = ['bank', 'Bank', 'banking', 'architect', 'chemist', 'pharma', 'account', 'credit', 'transfer', 'allow',
               'assure', 'government', 'organisation', 'fund', 'secure', 'confirm', 'Secure', 'Confirm', 'webscr',
               'login', 'Login', 'Log in', 'Log In', 'ebayisapi', 'sign in', 'Sign in', 'Sign In', 'sign up', 'Sign up',
@@ -922,37 +918,29 @@ def SensitiveWordCount(url):
               'safe', 'browse', 'fix', 'get', 'cash', 'credit', 'buy', 'purchase', 'coin', 'money', 'obtain', 'help',
               'connect', 'drug']
 
-    while retries < max_retries:
-        try:
-            req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            page_source = urlopen(req).read()
-            print("Page source is downloaded.")
-            soup = BeautifulSoup(page_source, 'html.parser')
 
-            count = 0
-            for word in wanted:
-                freq = soup.get_text().lower().count(word)
-                count += freq
+    try:
+        req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        page_source = urlopen(req).read()
+        print("Page source is downloaded.")
+        soup = BeautifulSoup(page_source, 'html.parser')
 
-            return count
+        count = 0
+        for word in wanted:
+            freq = soup.get_text().lower().count(word)
+            count += freq
 
-        except HTTPError as e:
-            if e.code == 429:
-                print(f"Too many requests. Retrying in 5 seconds...")
-                #time.sleep(5)  # Wait for 5 seconds before retrying
-                retries += 1
-            else:
-                print(f"HTTP Error {e.code}: {e.reason}")
-                return 0  # or handle the error as needed
+        return count
 
-        except (URLError, ConnectionResetError) as e:
-            print(f"Netwoek level error occurred: {e}. Retrying...")
-            #time.sleep(2)  # Wait for 2 seconds before retrying
-            retries += 1
-        except Exception as e:
-            return 0
-    #print("Max retries reached. Unable to fetch page source.")
-    return 0  # or return an appropriate value based on your requirements
+    except HTTPError as e:
+        print(f"HTTP Error {e.code}: {e.reason}")
+        return 0  # or handle the error as needed
+
+    except URLError as e:
+        print(f"Netwoek level error occurred: {e}. Retrying...")
+        return 0
+    except Exception as e:
+        return 0
 
 
 # Function to check if the domain name is present in suspicious list Feature49
@@ -1864,8 +1852,7 @@ def ensure_http_www_prefix(url):
 
 if __name__ == "__main__":
     #Read input file from current path
-    data = pd.read_csv("mal50.csv", encoding= 'unicode_escape')
-
+    data = pd.read_csv("(url,label)copy_0f_combined_dataset1.csv", encoding= 'unicode_escape')
 
     # create pandas data frame to save output
     df = pd.DataFrame(columns=['Sr. No.', 'Domain Name', 'URL Length', 'Is IP as Host name','Is .exe present',
@@ -1895,7 +1882,8 @@ if __name__ == "__main__":
     for index,val in data.iterrows():
         start_time = time.time()
         num = num + 1
-        selfwp=ensure_http_www_prefix(val['url'])
+        oristr =str(val['url'])
+        selfwp=ensure_http_www_prefix(oristr)
         parsed_url = urllib.parse.urlparse(selfwp)
         hostname = parsed_url.netloc
         # Function Call
@@ -2098,7 +2086,7 @@ if __name__ == "__main__":
         print(num,"URLs Completed in",execution_time,"sec, url:",selfwp)
 
         # save result to output file
-        df.to_csv("w1.csv", index=False)
+        df.to_csv("Feature_Extracted_Dataset-1.csv", index=False)
 
 
 #End of the Program
