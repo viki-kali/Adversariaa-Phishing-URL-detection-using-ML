@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent default margin/padding and ensure the background covers the entire window */
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        #background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Send the background image to the back */
+        }
+        .container {
+            text-align: center;
+            margin-top: 20vh;
+        }
+
+        .title {
+            font-size: 2.5em;
+            color: white;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .textbox {
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        .submit-button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="background-image">
+        <img class="background-image" src="{{ url_for('static', filename='bgimg.jpg') }}" alt="Background Image">
+    </div>
+    <div class="container">
+        <h1 class="title">Detection of Adversarial Phishing Attack<br> using
+Machine Learning Techniques</h1>
+
+        <form action="/find" method="post">
+            <input type="text" placeholder="Enter the URL..." class="textbox" name="urlval" required>
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function resizeBackground() {
+            var backgroundImage = document.getElementById('background-image');
+            backgroundImage.style.width = window.innerWidth + 'px';
+            backgroundImage.style.height = window.innerHeight + 'px';
+        }
+
+        // Initial call to set the background size
+        resizeBackground();
+
+        // Attach the resizeBackground function to the window resize event
+        window.addEventListener('resize', resizeBackground);
+    </script>
+</body>
+</html>
+
